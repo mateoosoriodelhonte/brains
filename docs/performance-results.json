@@ -1,0 +1,167 @@
+{
+  "measuredAt": "2026-11-05T17:56:39.773Z",
+  "environment": {
+    "platform": "darwin",
+    "release": "27.0.0",
+    "architecture": "arm64",
+    "cpu": "Apple M2 Pro",
+    "memoryGiB": 16,
+    "node": "v26.0.0",
+    "browser": "157.0.8103.38",
+    "channel": "chrome",
+    "headless": true,
+    "viewport": "1440 × 1000",
+    "timezone": "America/Denver"
+  },
+  "method": "Production Vite build served over loopback. Twenty new isolated browser contexts (cold browser cache), each seeded with 200 separate fixture tasks before loading. performance.now() from navigation start through two animation frames after all 200 rows exist. One localStorage read asserted per navigation. Same browser process, no CPU throttling; this is not a physical monitor paint measurement.",
+  "thresholdMs": 2000,
+  "requiredPasses": 19,
+  "passedRuns": 20,
+  "minMs": 93.30000001192093,
+  "medianMs": 95.09999999403954,
+  "p95Ms": 98.19999998807907,
+  "maxMs": 99.59999996423721,
+  "runs": [
+    {
+      "run": 1,
+      "durationMs": 97.60000002384186,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 2,
+      "durationMs": 95.90000003576279,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 3,
+      "durationMs": 95.89999997615814,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 4,
+      "durationMs": 95.19999998807907,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 5,
+      "durationMs": 94.60000002384186,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 6,
+      "durationMs": 97.30000001192093,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 7,
+      "durationMs": 96.69999998807907,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 8,
+      "durationMs": 93.30000001192093,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 9,
+      "durationMs": 94.59999996423721,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 10,
+      "durationMs": 96.5,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 11,
+      "durationMs": 94.80000001192093,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 12,
+      "durationMs": 93.59999996423721,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 13,
+      "durationMs": 93.39999997615814,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 14,
+      "durationMs": 97.69999998807907,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 15,
+      "durationMs": 94.09999996423721,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 16,
+      "durationMs": 95,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 17,
+      "durationMs": 95,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 18,
+      "durationMs": 99.59999996423721,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 19,
+      "durationMs": 98.19999998807907,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    },
+    {
+      "run": 20,
+      "durationMs": 93.60000002384186,
+      "storageReads": 1,
+      "tasks": 200,
+      "passed": true
+    }
+  ],
+  "limitation": "Measured on the Mac available to this Codex session. The team must repeat on the designated course test laptop before claiming that laptop satisfies NFR-1."
+}
