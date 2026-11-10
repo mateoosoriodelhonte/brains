@@ -20,3 +20,7 @@ This Codex session on November 5, 2026 provided implementation assistance for th
 4. Feedback review found that an earlier successful-save toast could remain visible when a subsequent form submission failed. Submitting a form now clears the prior toast before attempting the operation; a browser assertion verifies the failed submission has no success feedback. Save actions also restore keyboard focus after refreshing the view.
 
 These are observed implementation corrections, not invented mistakes. No claim is made that either team member has reviewed, understood, or approved every file. The students should review and be able to explain the implementation before submitting it. Actual automated check results and environment limitations are recorded in `verification.md` and `performance-results.json`.
+
+## November 10, 2026 follow-up
+
+At the user's request, Codex expanded the existing `.gitignore`, added a GitHub Actions test/build workflow, and wrote teammate contribution instructions. These are separate focused changes in Git. GitHub reported no linked author account for the original MVP commit, so this repository's local author email was changed to the authenticated user's ID-based GitHub noreply address for new commits. Existing history was preserved. No team review is claimed.

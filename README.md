@@ -90,6 +90,8 @@ There is no automatic format migration or automatic reset of corrupted records.
 
 `src/main.js` only connects the components. Read [architecture](docs/architecture.md), [requirements traceability](docs/requirements-traceability.md), [design changes](docs/design-changes.md), and [AI assistance](docs/ai-usage.md).
 
+For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests and the production build automatically on pushes to `main` and pull requests.
+
 ## Demonstrate it
 
 1. Add an untagged task, then create tags for SUU, a certification, and another activity.
