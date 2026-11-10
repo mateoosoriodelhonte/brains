@@ -1,9 +1,42 @@
+# Installed dependencies and generated builds
 node_modules/
 dist/
+coverage/
+.nyc_output/
+
+# Browser test output (may contain screenshots and saved page content)
 test-results/
 playwright-report/
+playwright/.cache/
+
+# Local logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating system and editor temporary files
 .DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Local settings and secrets; sanitized example environment files may be committed
 .env
 .env.*
 !.env.example
+!.env.*.example
 *.local
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+secrets/
+
+# Personal workspace exports and backups belong outside version control
+backups/

@@ -28,6 +28,12 @@ Open **http://127.0.0.1:4173**. Keep the local server running. The server only s
 
 Vite setup follows the [official Vite guide](https://vite.dev/guide/). Versions are pinned in `package.json` and `package-lock.json`.
 
+## What belongs in Git
+
+Commit source code, tests, documentation, `package.json`, and `package-lock.json`. The root `.gitignore` excludes installed dependencies, builds, test screenshots/traces, coverage, logs, local environment files, credential/key files, and personal backups. Sanitized example environment files such as `.env.example` remain allowed.
+
+Before committing, inspect `git status` and `git diff --cached`. Ignore rules do not remove already tracked files or detect every possible secret; never commit real passwords, tokens, or personal workspace data. Keep the lockfile tracked so both teammates install the same dependency versions.
+
 ## Checks
 
 ```sh
