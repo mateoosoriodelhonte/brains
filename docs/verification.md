@@ -1,5 +1,17 @@
 # Verification record
 
+## November 10, 2026 repository and input-safety follow-up
+
+- Expanded `.gitignore` patterns were checked with `git check-ignore`; `git ls-files -ci --exclude-standard` found no tracked files matching ignore rules.
+- `npm test`: **25 passed, 0 failed**, including new SQL-looking text persistence and literal identifier tests.
+- `npx playwright test tests/browser/flows.spec.js -g injection`: **1 passed, 0 failed**, exercising SQL-like input and hostile markup across task/tag/note display, reload, and note editing.
+- Production builds passed locally, including the build started by the browser test runner.
+- Added the **Project checks** GitHub Actions workflow for unit tests and production builds. Remote run status is available in the repository's Actions tab; local results do not imply a remote run has passed.
+- The existing runtime JSON serialization and text escaping were reviewed and retained. No SQL backend was introduced. See [security boundaries](security.md).
+- The complete browser suite and performance measurement below are the earlier November 5 results; they were not repeated for this documentation/test-only follow-up.
+
+## November 5, 2026 MVP verification
+
 Verified November 5, 2026, in the local environment available to this Codex session. These results describe tests actually executed, not checks inferred from the code.
 
 ## Results

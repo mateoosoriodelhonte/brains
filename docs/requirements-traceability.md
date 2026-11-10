@@ -23,5 +23,6 @@ Component paths in the table refer to their exact folder under `src/`, e.g. `src
 - `tests/workspace.test.js`: all write operations roll back memory on save failure; malformed relationships, duplicate IDs, missing fields, and impossible dates disable writing.
 - `tests/architecture.test.js`: six folders, allowed imports, no import cycles.
 - Browser checks: blocked localStorage, unreadable JSON, quota error retaining draft/dashboard; phone-width overflow, keyboard skip link; no external asset requests; dates in America/Los_Angeles and Pacific/Auckland.
+- Input-safety follow-up: `tests/security.test.js` covers literal SQL-looking values and IDs without loss of existing records; the browser injection test covers inert task/tag/note markup across display, reload, and editing. See `docs/security.md` for the localStorage boundary and the absence of a SQL query layer.
 
 Automated coverage is evidence for implemented behavior, not a claim of team review, full accessibility conformance, or verification on an unidentified course test laptop.

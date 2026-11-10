@@ -19,6 +19,67 @@ async function createTask(page, title, dueDate, tags = []) {
   await expect(page.getByRole("dialog")).not.toBeVisible();
 }
 
+test("injection payloads stay inert in task, tag, and note rendering and storage", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  await createTask(page, "Keep this original task", "2026-11-10");
+  const sql = "'); DROP TABLE tasks; --";
+  const markup = "<svg onload=window.x=1>";
+  const title = `${sql} <img src=x onerror=window.x=1>`;
+  await createTag(page, sql);
+  await createTag(page, markup);
+  await createTask(page, title, "2026-11-11", [sql, markup]);
+  await expect(page.locator(".task-copy h3")).toHaveText([
+    "Keep this original task",
+    title,
+  ]);
+  await expect(page.locator(".task-copy img, .task-copy svg")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: markup, exact: true }).locator("svg"),
+  ).toHaveCount(0);
+  await page.reload();
+  await expect(page.locator(".task-row")).toHaveCount(2);
+  await expect(page.locator(".task-copy h3").last()).toHaveText(title);
+  expect(await page.evaluate(() => window.x)).toBeUndefined();
+
+  await page.locator("nav").getByRole("button", { name: "Notes" }).click();
+  await page
+    .getByRole("button", { name: "Add note", exact: true })
+    .first()
+    .click();
+  const content =
+    "'); DELETE FROM notes; --\n</textarea><img src=x onerror=window.x=1>";
+  await page.getByLabel("Note title").fill(title);
+  await page.getByLabel("Course or lecture").fill("' OR 1=1 --");
+  await page.getByLabel("Content", { exact: false }).fill(content);
+  await page.getByRole("dialog").getByLabel(sql, { exact: true }).check();
+  await page.getByRole("button", { name: "Save note", exact: true }).click();
+  await page.reload();
+  await page.locator("nav").getByRole("button", { name: "Notes" }).click();
+  await expect(page.locator(".note-excerpt")).toHaveText(content);
+  await expect(page.locator(".note-card img, .note-card script")).toHaveCount(
+    0,
+  );
+  await page
+    .getByRole("button", { name: `Edit ${title}`, exact: true })
+    .click();
+  await expect(page.getByLabel("Content", { exact: false })).toHaveValue(
+    content,
+  );
+  await expect(page.getByRole("dialog").locator("img, script")).toHaveCount(0);
+  const records = await page.evaluate(
+    () => JSON.parse(localStorage.getItem("brains.workspace")).workspace,
+  );
+  expect(records.tasks).toHaveLength(2);
+  expect(records.tasks[0].title).toBe("Keep this original task");
+  expect(records.notes[0].content).toBe(content);
+  expect(await page.evaluate(() => window.x)).toBeUndefined();
+  expect(errors).toEqual([]);
+});
+
 test("tasks: validation, reusable tags, due order, completion, OR filtering, and reload", async ({
   page,
 }) => {

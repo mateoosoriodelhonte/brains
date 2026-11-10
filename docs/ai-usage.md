@@ -24,3 +24,5 @@ These are observed implementation corrections, not invented mistakes. No claim i
 ## November 10, 2026 follow-up
 
 At the user's request, Codex expanded the existing `.gitignore`, added a GitHub Actions test/build workflow, and wrote teammate contribution instructions. These are separate focused changes in Git. GitHub reported no linked author account for the original MVP commit, so this repository's local author email was changed to the authenticated user's ID-based GitHub noreply address for new commits. Existing history was preserved. No team review is claimed.
+
+The user also requested SQL-injection protection. Codex reviewed the existing storage and rendering paths: the MVP has no SQL execution layer. It added regression tests for SQL-looking inputs across JSON persistence, literal ID selection, and hostile markup in task/tag/note rendering and the editor, plus `docs/security.md` describing actual controls and the separate requirements of any future SQL backend. The existing escaping and JSON behavior were retained; no SQL-word blacklist or remote backend was introduced.

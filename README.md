@@ -92,6 +92,8 @@ There is no automatic format migration or automatic reset of corrupted records.
 
 For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests and the production build automatically on pushes to `main` and pull requests.
 
+See [input handling and injection boundaries](docs/security.md) for the localStorage architecture, safe text rendering, and injection regression checks. This MVP has no SQL query layer.
+
 ## Demonstrate it
 
 1. Add an untagged task, then create tags for SUU, a certification, and another activity.
