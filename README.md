@@ -69,7 +69,7 @@ Browser tests start and stop their own production preview on port 4173; stop any
 - Clearing browser data or using a temporary/private profile can lose the workspace. The MVP has no in-app export/import or automatic backup.
 - The timer defaults to 25-minute work and 5-minute break sessions, transitions automatically, and continues accurately across delayed callbacks and navigation within the app. Keep the tab open. Reloading or closing the tab resets the timer. Timer state and selected filters are deliberately not persisted. No alarm or external notification is sent.
 - Notes need a title, course/lecture, and nonblank content. Save explicitly. Unsaved changes are marked and closing the form asks before discarding them. Browser reload/close warnings depend on browser support.
-- Edit a saved task's title, due date, or description from the dashboard. Create a tag while adding a task or applying tags to an existing task. The note editor allows intentional tag removal. Tag rename and deletion and task deletion are outside this MVP.
+- Edit a saved task's title, due date, or description from the dashboard. Create a reusable tag while adding a task, applying tags to a saved task, or writing or editing a note. The note editor also lets you uncheck existing tags.
 - Modern browsers with ES modules, `crypto.randomUUID`, native `<dialog>`, localStorage, and current CSS support are expected. Automated browser coverage is Chrome; Safari, Firefox, actual mobile devices, and full screen-reader auditing remain unverified.
 
 ### If saving fails

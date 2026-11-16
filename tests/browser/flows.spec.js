@@ -316,6 +316,41 @@ test("notes: explicit saving, unsaved warnings, safe text, editing, filters, res
   });
 });
 
+test("tags created in a note are saved with the note and reusable on tasks", async ({ page }) => {
+  await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
+  await navigation.getByRole("button", { name: "Notes" }).click();
+  await page.getByRole("button", { name: "Add note", exact: true }).first().click();
+  const dialog = page.getByRole("dialog");
+  const save = dialog.getByRole("button", { name: "Save note" });
+  await dialog.getByLabel("Note title").fill("Diagnostics notes");
+  await dialog.getByLabel("Course or lecture").fill("Computer repair course");
+  await dialog.getByLabel("New tag name").fill("Troubleshooting");
+  await save.click();
+  await expect(dialog.getByRole("alert")).toHaveText("Note content is required.");
+  expect(await page.evaluate(() => localStorage.getItem("brains.workspace"))).toBeNull();
+  await dialog.getByRole("textbox", { name: /Content/ }).fill("Check connections first.");
+  await save.click();
+  await expect(page.locator(".note-card .tag-chip")).toHaveText("Troubleshooting");
+
+  await page.getByRole("button", { name: "Edit Diagnostics notes" }).click();
+  await expect(dialog.getByRole("checkbox", { name: "Troubleshooting" })).toBeChecked();
+  await dialog.getByLabel("New tag name").fill("troubleshooting");
+  await save.click();
+  await expect(dialog.getByRole("alert")).toHaveText("A tag with this name already exists.");
+  await dialog.getByLabel("New tag name").fill("Hardware");
+  await save.click();
+  await expect(page.locator(".note-card .tag-chip")).toHaveText(["Troubleshooting", "Hardware"]);
+
+  await navigation.getByRole("button", { name: "Dashboard" }).click();
+  await createTask(page, "Review diagnostics", "2026-12-01", ["Troubleshooting"]);
+  await page.reload();
+  await expect(page.locator(".task-row .tag-chip")).toHaveText("Troubleshooting");
+  await navigation.getByRole("button", { name: "Notes" }).click();
+  await page.getByRole("button", { name: "Hardware", exact: true }).click();
+  await expect(page.locator(".note-card .tag-chip")).toHaveText(["Troubleshooting", "Hardware"]);
+});
+
 test("malformed stored data shows a warning and stays untouched", async ({
   page,
 }) => {

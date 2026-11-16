@@ -132,18 +132,19 @@ export class LearnerProfile {
     this.state = candidate;
     return result;
   }
-  resolveTags(state, tagIds) {
+  prepareTagsForSave(state, tagIds, newTagName) {
     if (!Array.isArray(tagIds)) throw new Error("Select valid tags.");
-    return [...new Set(tagIds)].map((id) => {
+    const tags = [...new Set(tagIds)].map((id) => {
       const tag = state.tags.find((item) => item.id === id);
       if (!tag) throw new Error("One of the selected tags no longer exists.");
       return tag;
     });
+    if (newTagName) tags.push(this.addTagToWorkspace(state, newTagName));
+    return tags;
   }
   submitTask(title, dueDate, description = "", tagIds = [], newTagName = "") {
     return this.transact((state) => {
-      const tags = this.resolveTags(state, tagIds);
-      if (newTagName) tags.push(this.addTagToWorkspace(state, newTagName));
+      const tags = this.prepareTagsForSave(state, tagIds, newTagName);
       return state.taskList.addTask(title, dueDate, description, { tags });
     });
   }
@@ -171,21 +172,21 @@ export class LearnerProfile {
     state.tags.push(tag);
     return tag;
   }
-  createNote(title, courseName, content, tagIds = []) {
+  createNote(title, courseName, content, tagIds = [], newTagName = "") {
     return this.transact((state) => {
       const note = new Note(title, courseName, content, {
-        tags: this.resolveTags(state, tagIds),
+        tags: this.prepareTagsForSave(state, tagIds, newTagName),
         lastEdited: this.clock().toISOString(),
       });
       state.notes.push(note);
       return note;
     });
   }
-  editNote(id, title, courseName, content, tagIds = []) {
+  editNote(id, title, courseName, content, tagIds = [], newTagName = "") {
     return this.transact((state) => {
       const note = state.notes.find((item) => item.id === id);
       if (!note) throw new Error("This note could not be found.");
-      const tags = this.resolveTags(state, tagIds);
+      const tags = this.prepareTagsForSave(state, tagIds, newTagName);
       note.edit(title, courseName, content, this.clock().toISOString());
       note.tags = tags;
       return note;
@@ -199,8 +200,7 @@ export class LearnerProfile {
           : state.notes.find((note) => note.id === id);
       if (!item || !["task", "note"].includes(kind))
         throw new Error("This item could not be found.");
-      const tags = this.resolveTags(state, tagIds);
-      if (newTagName) tags.push(this.addTagToWorkspace(state, newTagName));
+      const tags = this.prepareTagsForSave(state, tagIds, newTagName);
       tags.forEach((tag) => item.addTag(tag));
       return item;
     });

@@ -128,7 +128,13 @@ export class BrainsController {
         if (form.dataset.id) this.workspace.editTask(form.dataset.id, ...args);
         else this.workspace.submitTask(...args, tags, newTagName);
       } else if (form.id === "note-form") {
-        const args = [text("title"), text("courseName"), text("content"), tags];
+        const args = [
+          text("title"),
+          text("courseName"),
+          text("content"),
+          tags,
+          newTagName,
+        ];
         if (form.dataset.id) this.workspace.editNote(form.dataset.id, ...args);
         else this.workspace.createNote(...args);
       } else if (form.id === "tag-form") {

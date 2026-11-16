@@ -1,5 +1,10 @@
 # Verification record
 
+## November 16, 2026 product review
+
+- All 25 unit tests and 15 browser tests passed against the updated product. The browser suite built the production app and verified inline note tag creation, editing, duplicate rejection, reuse on a task, and filtering after reload.
+- The 200-task dashboard met A3's two-second threshold in all 20 runs on the Mac used for this check. The median was 194.2 ms and the slowest run was 201.4 ms.
+
 ## Repository submission
 
 - A fresh checkout started from the README's `npm ci` and `npm run dev` steps on Node.js 24.22.3. Chrome rendered the empty dashboard with no `.env` file.

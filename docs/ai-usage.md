@@ -34,3 +34,7 @@ Codex preserved note formatting, kept unfinished tag names when switching views,
 ## Repository submission follow-up
 
 Codex compared the repository against the team’s A1–A3 PDFs, copied the originals into `docs/`, and prepared the repository section with a screenshot of the Git file tree. Codex revised the setup steps, verified the component folders against A3, and implemented and tested task editing from A1 and inline tag creation from A2. The component ownership table records the original team assignments from A3. This log describes the assistance used to prepare the submission.
+
+## November 16, 2026 product review
+
+Codex compared the running product against A1–A3. The note editor now creates and applies a reusable tag in the same save as the note, using the transaction already used for task tagging. Codex tested invalid and duplicate submissions, failed storage writes, reuse of a tag on a task, and filtering after reload. The full unit and browser suites passed.

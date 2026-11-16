@@ -251,7 +251,8 @@ export class BrainsScreens {
       );
   }
   tagOptions(tags, selected, prefix) {
-    return `<fieldset class="tag-options"><legend>Tags <span class="muted">(optional)</span></legend>${tags.length ? tags.map((tag) => `<label class="tag-choice" for="${escape(prefix)}-${escape(tag.id)}"><input id="${escape(prefix)}-${escape(tag.id)}" type="checkbox" name="tagIds" value="${escape(tag.id)}" ${selected.includes(tag.id) ? "checked" : ""}>${escape(tag.name)}</label>`).join("") : '<p class="small muted">Create reusable tags in the sidebar, then choose them here.</p>'}</fieldset>`;
+    if (!tags.length) return "";
+    return `<fieldset class="tag-options"><legend>Tags <span class="muted">(optional)</span></legend>${tags.map((tag) => `<label class="tag-choice" for="${escape(prefix)}-${escape(tag.id)}"><input id="${escape(prefix)}-${escape(tag.id)}" type="checkbox" name="tagIds" value="${escape(tag.id)}" ${selected.includes(tag.id) ? "checked" : ""}>${escape(tag.name)}</label>`).join("")}</fieldset>`;
   }
   formHeader(title, description) {
     return `<div class="dialog-heading"><div><p class="eyebrow">YOUR LEARNING WORKSPACE</p><h2 id="dialog-title">${title}</h2></div><button type="button" class="close-button" data-action="close-form" aria-label="Close form">×</button></div><p class="muted">${description}</p>`;
@@ -276,7 +277,8 @@ export class BrainsScreens {
       <label for="note-title">Note title <span class="required">*</span></label><input id="note-title" name="title" maxlength="200" required value="${escape(note?.title ?? "")}" placeholder="Give this thought a title" aria-describedby="form-error">
       <label for="note-course">Course or lecture <span class="required">*</span></label><input id="note-course" name="courseName" maxlength="200" required value="${escape(note?.courseName ?? "")}" placeholder="e.g. CS 2450 · Layered architecture" aria-describedby="form-error">
       <label for="note-content">Content <span class="required">*</span></label><textarea id="note-content" name="content" rows="7" maxlength="100000" required placeholder="What would you like to remember?" aria-describedby="form-error"></textarea>
-      ${this.tagOptions(snapshot.tags, note?.tagIds ?? [], "note")}<p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><span id="draft-state" class="draft-state">${note ? "All changes saved" : "Not saved yet"}</span><button type="button" class="button secondary" data-action="close-form">Cancel</button><button class="button primary" ${snapshot.loadError ? "disabled" : ""}>Save note</button></div></form>`;
+      ${this.tagOptions(snapshot.tags, note?.tagIds ?? [], "note")}${this.newTagField("new-note-tag")}
+      <p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><span id="draft-state" class="draft-state">${note ? "All changes saved" : "Not saved yet"}</span><button type="button" class="button secondary" data-action="close-form">Cancel</button><button class="button primary" ${snapshot.loadError ? "disabled" : ""}>Save note</button></div></form>`;
     this.dialog.querySelector("#note-content").value = note?.content ?? "";
     this.dialog.showModal();
     this.dialog.querySelector("#note-title").focus();

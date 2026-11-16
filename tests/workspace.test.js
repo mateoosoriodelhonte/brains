@@ -140,8 +140,8 @@ test("all failed writes leave previous valid memory and saved data intact", () =
     () => profile.editTask(task.id, "Changed", "2026-11-07", "Description"),
     () => profile.completeTask(task),
     () => profile.createTag("New"),
-    () => profile.createNote("New", "Course", "New"),
-    () => profile.editNote(note.id, "Changed", "Course", "Changed"),
+    () => profile.createNote("New", "Course", "New", [], "Inline tag"),
+    () => profile.editNote(note.id, "Changed", "Course", "Changed", [], "Inline tag"),
     () => profile.applyTags("task", task.id, [tag.id], "Inline tag"),
   ]) {
     assert.throws(action, /unavailable/);
