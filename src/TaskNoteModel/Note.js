@@ -1,5 +1,10 @@
-import { identifier, matchingTags, requiredText } from "./validation.js";
+import { identifier, matchingTags, optionalText, requiredText } from "./validation.js";
 import { Tag } from "./Tag.js";
+
+function noteContent(value) {
+  requiredText(value, "Note content", 100000);
+  return optionalText(value, "Note content");
+}
 
 export class Note {
   constructor(
@@ -11,7 +16,7 @@ export class Note {
     this.id = identifier(id);
     this.title = requiredText(title, "Note title");
     this.courseName = requiredText(courseName, "Course or lecture");
-    this.content = requiredText(content, "Note content", 100000);
+    this.content = noteContent(content);
     if (
       typeof lastEdited !== "string" ||
       !Number.isFinite(Date.parse(lastEdited))
@@ -22,7 +27,7 @@ export class Note {
     tags.forEach((tag) => this.addTag(tag));
   }
   editContent(newContent, now = new Date().toISOString()) {
-    const content = requiredText(newContent, "Note content", 100000);
+    const content = noteContent(newContent);
     if (!Number.isFinite(Date.parse(now)))
       throw new Error("Invalid note edit date.");
     this.content = content;

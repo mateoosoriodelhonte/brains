@@ -267,8 +267,9 @@ export class BrainsScreens {
     this.dialog.innerHTML = `${this.formHeader(note ? "Back to your notes." : "Keep a good thought.", "Your changes stay in this form until you choose Save.")}<form id="note-form" ${note ? `data-id="${escape(note.id)}"` : ""} novalidate>
       <label for="note-title">Note title <span class="required">*</span></label><input id="note-title" name="title" maxlength="200" required value="${escape(note?.title ?? "")}" placeholder="Give this thought a title" aria-describedby="form-error">
       <label for="note-course">Course or lecture <span class="required">*</span></label><input id="note-course" name="courseName" maxlength="200" required value="${escape(note?.courseName ?? "")}" placeholder="e.g. CS 2450 · Layered architecture" aria-describedby="form-error">
-      <label for="note-content">Content <span class="required">*</span></label><textarea id="note-content" name="content" rows="7" maxlength="100000" required placeholder="What would you like to remember?" aria-describedby="form-error">${escape(note?.content ?? "")}</textarea>
+      <label for="note-content">Content <span class="required">*</span></label><textarea id="note-content" name="content" rows="7" maxlength="100000" required placeholder="What would you like to remember?" aria-describedby="form-error"></textarea>
       ${this.tagOptions(snapshot.tags, note?.tagIds ?? [], "note")}<p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><span id="draft-state" class="draft-state">${note ? "All changes saved" : "Not saved yet"}</span><button type="button" class="button secondary" data-action="close-form">Cancel</button><button class="button primary" ${snapshot.loadError ? "disabled" : ""}>Save note</button></div></form>`;
+    this.dialog.querySelector("#note-content").value = note?.content ?? "";
     this.dialog.showModal();
     this.dialog.querySelector("#note-title").focus();
   }

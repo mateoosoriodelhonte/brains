@@ -201,7 +201,7 @@ test("notes: explicit saving, unsaved warnings, safe text, editing, filters, res
   await page.getByLabel("Note title").fill("Layers & MVC");
   await page.getByLabel("Course or lecture").fill("CS 2450");
   const content =
-    '</textarea><img src=x onerror="window.xss=true">\nModel → Controller';
+    '\n  </textarea><img src=x onerror="window.xss=true">\n  Model → Controller\n';
   await page.getByLabel("Content", { exact: false }).fill(content);
   await page
     .getByRole("dialog")
