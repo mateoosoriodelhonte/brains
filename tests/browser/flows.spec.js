@@ -183,6 +183,17 @@ test("existing task tags are additive and keep shared identity after reload", as
   await expect(task.locator(".tag-chip")).toHaveText(["A", "B"]);
 });
 
+test("a sidebar tag draft survives navigation and clears after saving", async ({ page }) => {
+  await page.goto("/");
+  const draft = page.getByLabel("Create a reusable tag");
+  await draft.fill("Study group");
+  await page.locator("nav").getByRole("button", { name: "Notes" }).click();
+  await expect(draft).toHaveValue("Study group");
+  await page.getByRole("button", { name: "Create tag", exact: true }).click();
+  await expect(draft).toHaveValue("");
+  await expect(page.getByRole("button", { name: "Study group", exact: true })).toBeVisible();
+});
+
 test("notes: explicit saving, unsaved warnings, safe text, editing, filters, restoration", async ({
   page,
 }) => {

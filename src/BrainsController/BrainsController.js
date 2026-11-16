@@ -131,6 +131,7 @@ export class BrainsController {
         else this.workspace.createNote(...args);
       } else if (form.id === "tag-form") {
         this.workspace.createTag(text("name"));
+        form.reset();
       } else if (form.dataset.kind === "task-tags") {
         this.workspace.applyTags("task", form.dataset.id, tags);
       } else return;

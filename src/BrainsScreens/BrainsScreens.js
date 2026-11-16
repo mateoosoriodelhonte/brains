@@ -99,11 +99,10 @@ export class BrainsScreens {
     const warning = this.root.querySelector("#storage-error");
     warning.hidden = !snapshot.loadError;
     warning.textContent = snapshot.loadError;
-    this.root.querySelector("#tag-panel").innerHTML = this.tagPanel(
-      snapshot,
-      route,
-      filters,
-    );
+    const tagPanel = this.root.querySelector("#tag-panel");
+    const tagDraft = tagPanel.querySelector("#tag-name")?.value ?? "";
+    tagPanel.innerHTML = this.tagPanel(snapshot, route, filters);
+    tagPanel.querySelector("#tag-name").value = tagDraft;
     this.root.querySelector("#main").innerHTML =
       route === "dashboard"
         ? this.dashboard(snapshot, filters)
