@@ -48,6 +48,7 @@ Before committing, inspect `git status` and `git diff --cached`. Ignore rules do
 npm test                    # Node's built-in runner: domain, application, storage, architecture
 npm run build               # Production bundle
 npm run test:browser        # Main flows + NFR-1 on the production bundle
+npm run test:flows          # Main browser flows on the production bundle
 npm run test:performance    # Only the 20-run, 200-task measurement
 ```
 
