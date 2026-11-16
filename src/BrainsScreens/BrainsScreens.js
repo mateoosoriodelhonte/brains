@@ -152,6 +152,7 @@ export class BrainsScreens {
   taskRow(task, snapshot) {
     const disabled = snapshot.loadError ? "disabled" : "";
     const availableTags = snapshot.tags.filter((tag) => !task.tagIds.includes(tag.id));
+    const newTagId = `task-new-tag-${task.id}`;
     const state = task.isComplete
       ? "Completed"
       : task.isOverdue
@@ -162,8 +163,9 @@ export class BrainsScreens {
     return `<article class="task-row ${task.isComplete ? "is-complete" : ""}" data-task-id="${escape(task.id)}"><div class="task-row-main">
       <input type="checkbox" class="task-checkbox" data-complete="${escape(task.id)}" aria-label="Mark ${escape(task.title)} ${task.isComplete ? "pending" : "complete"}" ${task.isComplete ? "checked" : ""} ${disabled}>
       <div class="task-copy"><h3>${escape(task.title)}</h3>${task.description ? `<p class="task-description">${escape(task.description)}</p>` : ""}<div class="item-tags">${this.chips(task.tagIds)}</div></div>
-      <div class="task-date"><time datetime="${escape(task.dueDate)}">${formatDate(task.dueDate)}</time><span class="status ${task.isComplete ? "complete" : task.isOverdue ? "overdue" : ""}">${state}</span></div></div>
-      ${availableTags.length ? `<details class="task-tag-editor"><summary>Add tags</summary><form data-kind="task-tags" data-id="${escape(task.id)}" novalidate>${this.tagOptions(availableTags, [], `task-${task.id}`)}<p id="tags-error-${escape(task.id)}" class="form-error" role="alert"></p><button class="button secondary small-button" ${disabled}>Save tags</button></form></details>` : ""}</article>`;
+      <div class="task-date"><time datetime="${escape(task.dueDate)}">${formatDate(task.dueDate)}</time><span class="status ${task.isComplete ? "complete" : task.isOverdue ? "overdue" : ""}">${state}</span><button class="text-button task-edit" data-action="edit-task" data-id="${escape(task.id)}" aria-label="Edit task: ${escape(task.title)}" ${disabled}>Edit</button></div></div>
+      <details class="task-tag-editor"><summary>Add tags</summary><form data-kind="task-tags" data-id="${escape(task.id)}" novalidate>
+      ${availableTags.length ? this.tagOptions(availableTags, [], `task-${task.id}`) : ""}${this.newTagField(newTagId, disabled)}<p id="tags-error-${escape(task.id)}" class="form-error" role="alert"></p><button type="submit" class="button secondary small-button" ${disabled}>Save tags</button></form></details></article>`;
   }
   updateTaskCompletion(snapshot, id) {
     this.snapshot = snapshot;
@@ -254,12 +256,17 @@ export class BrainsScreens {
   formHeader(title, description) {
     return `<div class="dialog-heading"><div><p class="eyebrow">YOUR LEARNING WORKSPACE</p><h2 id="dialog-title">${title}</h2></div><button type="button" class="close-button" data-action="close-form" aria-label="Close form">×</button></div><p class="muted">${description}</p>`;
   }
-  openTaskForm(snapshot) {
-    this.dialog.innerHTML = `${this.formHeader("Make a little room for it.", "Add a task from any class, course, or corner of your life.")}<form id="task-form" novalidate>
-      <label for="task-title">Task title <span class="required">*</span></label><input id="task-title" name="title" maxlength="200" required placeholder="What’s your next step?" aria-describedby="form-error">
-      <label for="task-due">Due date <span class="required">*</span></label><input id="task-due" name="dueDate" type="date" required aria-describedby="form-error">
+  newTagField(id, disabled = "") {
+    return `<label for="${escape(id)}">New tag name <span class="muted">(optional)</span></label><input id="${escape(id)}" name="newTagName" maxlength="40" ${disabled}>`;
+  }
+  openTaskForm(snapshot, id) {
+    const task = snapshot.tasks.find((item) => item.id === id);
+    this.dialog.innerHTML = `${this.formHeader(task ? "Edit task" : "Add task", task ? "Update the task title, due date, or description." : "Set a due date and add any tags you want to use.")}<form id="task-form" ${task ? `data-id="${escape(task.id)}"` : ""} novalidate>
+      <label for="task-title">Task title <span class="required">*</span></label><input id="task-title" name="title" maxlength="200" required value="${escape(task?.title ?? "")}" placeholder="What’s your next step?" aria-describedby="form-error">
+      <label for="task-due">Due date <span class="required">*</span></label><input id="task-due" name="dueDate" type="date" required value="${escape(task?.dueDate ?? "")}" aria-describedby="form-error">
       <label for="task-description">Description <span class="muted">(optional)</span></label><textarea id="task-description" name="description" rows="3" maxlength="100000" placeholder="A little context for future you"></textarea>
-      ${this.tagOptions(snapshot.tags, [], "new-task")}<p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><span id="draft-state" class="draft-state">Not saved yet</span><button type="button" class="button secondary" data-action="close-form">Cancel</button><button class="button primary" ${snapshot.loadError ? "disabled" : ""}>Save task</button></div></form>`;
+      ${!task && snapshot.tags.length ? this.tagOptions(snapshot.tags, [], "new-task") : ""}${task ? "" : this.newTagField("new-task-tag")}<p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><span id="draft-state" class="draft-state">${task ? "All changes saved" : "Not saved yet"}</span><button type="button" class="button secondary" data-action="close-form">Cancel</button><button class="button primary" ${snapshot.loadError ? "disabled" : ""}>Save task</button></div></form>`;
+    this.dialog.querySelector("#task-description").value = task?.description ?? "";
     this.dialog.showModal();
     this.dialog.querySelector("#task-title").focus();
   }
@@ -315,12 +322,11 @@ export class BrainsScreens {
       const row = this.root.querySelector(`[data-task-id="${CSS.escape(form.dataset.id)}"]`);
       const target = row?.querySelector("summary") ?? row?.querySelector("[data-complete]");
       target?.focus();
-    } else if (form.id === "note-form" && form.dataset.id) {
-      this.root
-        .querySelector(
-          `[data-action="edit-note"][data-id="${CSS.escape(form.dataset.id)}"]`,
-        )
-        ?.focus();
+    } else if (form.dataset.id) {
+      const action = form.id === "task-form" ? "edit-task" : "edit-note";
+      const button = this.root.querySelector(`[data-action="${action}"][data-id="${CSS.escape(form.dataset.id)}"]`);
+      if (button) button.focus();
+      else this.focusHeading();
     } else {
       this.root
         .querySelector(

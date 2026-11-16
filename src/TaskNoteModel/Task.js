@@ -16,9 +16,7 @@ export class Task {
     { id, isComplete = false, tags = [] } = {},
   ) {
     this.id = identifier(id);
-    this.title = requiredText(title, "Task title");
-    this.dueDate = calendarDate(dueDate);
-    this.description = optionalText(description, "Description");
+    this.editDetails(title, dueDate, description);
     if (typeof isComplete !== "boolean")
       throw new Error("Invalid task completion status.");
     this.isComplete = isComplete;
@@ -26,6 +24,14 @@ export class Task {
     tags.forEach((tag) => this.addTag(tag));
   }
 
+  editDetails(title, dueDate, description) {
+    const validTitle = requiredText(title, "Task title");
+    const validDate = calendarDate(dueDate);
+    const validDescription = optionalText(description, "Description");
+    this.title = validTitle;
+    this.dueDate = validDate;
+    this.description = validDescription;
+  }
   markComplete() {
     this.isComplete = true;
   }

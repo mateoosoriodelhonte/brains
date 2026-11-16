@@ -44,9 +44,9 @@ export class BrainsController {
       this.route = id;
       this.render();
       this.screens.focusHeading();
-    } else if (action === "add-task") {
+    } else if (action === "add-task" || action === "edit-task") {
       this.dirty = false;
-      this.screens.openTaskForm(this.snapshot());
+      this.screens.openTaskForm(this.snapshot(), id);
     } else if (action === "add-note" || action === "edit-note") {
       this.dirty = false;
       this.screens.openNoteForm(this.snapshot(), id);
@@ -110,6 +110,7 @@ export class BrainsController {
     const data = new FormData(form);
     const text = (name) => String(data.get(name) ?? "");
     const tags = data.getAll("tagIds").map(String);
+    const newTagName = text("newTagName").trim();
     const errorTarget =
       form.id === "tag-form"
         ? "tag-error"
@@ -117,18 +118,15 @@ export class BrainsController {
           ? `tags-error-${form.dataset.id}`
           : "form-error";
     this.screens.clearError(errorTarget);
-    if (form.dataset.kind === "task-tags" && tags.length === 0) {
-      this.screens.showError(errorTarget, "Select at least one tag to add.");
+    if (form.dataset.kind === "task-tags" && tags.length === 0 && !newTagName) {
+      this.screens.showError(errorTarget, "Select a tag or enter a new tag name.");
       return;
     }
     try {
       if (form.id === "task-form") {
-        this.workspace.submitTask(
-          text("title"),
-          text("dueDate"),
-          text("description"),
-          tags,
-        );
+        const args = [text("title"), text("dueDate"), text("description")];
+        if (form.dataset.id) this.workspace.editTask(form.dataset.id, ...args);
+        else this.workspace.submitTask(...args, tags, newTagName);
       } else if (form.id === "note-form") {
         const args = [text("title"), text("courseName"), text("content"), tags];
         if (form.dataset.id) this.workspace.editNote(form.dataset.id, ...args);
@@ -137,7 +135,7 @@ export class BrainsController {
         this.workspace.createTag(text("name"));
         form.reset();
       } else if (form.dataset.kind === "task-tags") {
-        this.workspace.applyTags("task", form.dataset.id, tags);
+        this.workspace.applyTags("task", form.dataset.id, tags, newTagName);
       } else return;
       if (["task-form", "note-form"].includes(form.id)) {
         this.dirty = false;

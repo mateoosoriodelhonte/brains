@@ -178,13 +178,44 @@ test("existing task tags are additive and keep shared identity after reload", as
   await task.getByText("Add tags", { exact: true }).click();
   await expect(task.getByLabel("A", { exact: true })).toHaveCount(0);
   await task.getByRole("button", { name: "Save tags", exact: true }).click();
-  await expect(task.getByRole("alert")).toHaveText("Select at least one tag to add.");
+  await expect(task.getByRole("alert")).toHaveText("Select a tag or enter a new tag name.");
   await task.getByLabel("B", { exact: true }).check();
   await task.getByRole("button", { name: "Save tags", exact: true }).click();
-  await expect(task.getByRole("checkbox")).toBeFocused();
-  await expect(task.getByText("Add tags", { exact: true })).toHaveCount(0);
+  await expect(task.getByText("Add tags", { exact: true })).toBeFocused();
   await page.reload();
   await expect(task.locator(".tag-chip")).toHaveText(["A", "B"]);
+});
+
+test("a learner can edit a saved task and create tags during task workflows", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Add task", exact: true }).first().click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByLabel("Task title").fill("Workshop");
+  await dialog.getByLabel("New tag name").fill("Lab");
+  await dialog.getByRole("button", { name: "Save task" }).click();
+  await expect(dialog.getByRole("alert")).toContainText("due date");
+  expect(await page.evaluate(() => localStorage.getItem("brains.workspace"))).toBeNull();
+  await dialog.getByLabel("Due date").fill("2026-11-25");
+  await dialog.getByRole("button", { name: "Save task" }).click();
+  await createTask(page, "Reading", "2026-11-24");
+  await page.getByRole("checkbox", { name: "Mark Workshop complete" }).check();
+  await page.getByRole("button", { name: "Edit task: Workshop" }).click();
+  await expect(dialog.getByLabel("Task title")).toHaveValue("Workshop");
+  await expect(dialog.getByLabel("Due date")).toHaveValue("2026-11-25");
+  await dialog.getByLabel("Task title").fill("Lab workshop");
+  await dialog.getByLabel("Due date").fill("2026-11-23");
+  await dialog.getByLabel("Description").fill("Bring a notebook.");
+  await dialog.getByRole("button", { name: "Save task" }).click();
+  await expect(page.locator(".task-copy h3")).toHaveText(["Lab workshop", "Reading"]);
+  const task = page.locator(".task-row").filter({ has: page.getByRole("heading", { name: "Lab workshop" }) });
+  await task.getByText("Add tags", { exact: true }).click();
+  await task.getByLabel("New tag name").fill("Study group");
+  await task.getByRole("button", { name: "Save tags" }).click();
+  await page.reload();
+  await expect(task.locator(".tag-chip")).toHaveText(["Lab", "Study group"]);
+  await expect(task.getByText("Bring a notebook.")).toBeVisible();
+  await expect(task.getByRole("checkbox")).toBeChecked();
+  await expect(page.getByRole("button", { name: "Study group", exact: true })).toBeVisible();
 });
 
 test("a sidebar tag draft survives navigation and clears after saving", async ({ page }) => {

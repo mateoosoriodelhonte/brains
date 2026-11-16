@@ -136,11 +136,13 @@ test("all failed writes leave previous valid memory and saved data intact", () =
   gateway.fail = true;
   for (const action of [
     () => profile.submitTask("New", "2026-11-05"),
+    () => profile.submitTask("New", "2026-11-05", "", [], "Inline tag"),
+    () => profile.editTask(task.id, "Changed", "2026-11-07", "Description"),
     () => profile.completeTask(task),
     () => profile.createTag("New"),
     () => profile.createNote("New", "Course", "New"),
     () => profile.editNote(note.id, "Changed", "Course", "Changed"),
-    () => profile.applyTags("task", task.id, [tag.id]),
+    () => profile.applyTags("task", task.id, [tag.id], "Inline tag"),
   ]) {
     assert.throws(action, /unavailable/);
     assert.deepEqual(profile.records(), before);

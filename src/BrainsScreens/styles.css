@@ -618,6 +618,9 @@ main:focus {
   display: grid;
   gap: 6px;
 }
+.task-edit {
+  justify-self: end;
+}
 .status {
   font-size: 9px;
   color: #78856c;
@@ -653,6 +656,10 @@ main:focus {
 }
 .task-tag-editor form {
   padding: 12px 0;
+  max-width: 28rem;
+}
+.task-tag-editor button[type="submit"] {
+  margin-top: 8px;
 }
 .small-button {
   font-size: 10px;

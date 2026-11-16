@@ -140,12 +140,19 @@ export class LearnerProfile {
       return tag;
     });
   }
-  submitTask(title, dueDate, description = "", tagIds = []) {
-    return this.transact((state) =>
-      state.taskList.addTask(title, dueDate, description, {
-        tags: this.resolveTags(state, tagIds),
-      }),
-    );
+  submitTask(title, dueDate, description = "", tagIds = [], newTagName = "") {
+    return this.transact((state) => {
+      const tags = this.resolveTags(state, tagIds);
+      if (newTagName) tags.push(this.addTagToWorkspace(state, newTagName));
+      return state.taskList.addTask(title, dueDate, description, { tags });
+    });
+  }
+  editTask(id, title, dueDate, description) {
+    return this.transact((state) => {
+      const task = state.taskList.findTask(id);
+      task.editDetails(title, dueDate, description);
+      return task;
+    });
   }
   completeTask(task, isComplete = true) {
     if (typeof isComplete !== "boolean")
@@ -155,17 +162,14 @@ export class LearnerProfile {
     );
   }
   createTag(name) {
-    return this.transact((state) => {
-      const tag = new Tag(name);
-      if (
-        state.tags.some(
-          (existing) => existing.normalizedName === tag.normalizedName,
-        )
-      )
-        throw new Error("A tag with this name already exists.");
-      state.tags.push(tag);
-      return tag;
-    });
+    return this.transact((state) => this.addTagToWorkspace(state, name));
+  }
+  addTagToWorkspace(state, name) {
+    const tag = new Tag(name);
+    if (state.tags.some((existing) => existing.normalizedName === tag.normalizedName))
+      throw new Error("A tag with this name already exists.");
+    state.tags.push(tag);
+    return tag;
   }
   createNote(title, courseName, content, tagIds = []) {
     return this.transact((state) => {
@@ -187,7 +191,7 @@ export class LearnerProfile {
       return note;
     });
   }
-  applyTags(kind, id, tagIds) {
+  applyTags(kind, id, tagIds, newTagName = "") {
     return this.transact((state) => {
       const item =
         kind === "task"
@@ -195,7 +199,9 @@ export class LearnerProfile {
           : state.notes.find((note) => note.id === id);
       if (!item || !["task", "note"].includes(kind))
         throw new Error("This item could not be found.");
-      this.resolveTags(state, tagIds).forEach((tag) => item.addTag(tag));
+      const tags = this.resolveTags(state, tagIds);
+      if (newTagName) tags.push(this.addTagToWorkspace(state, newTagName));
+      tags.forEach((tag) => item.addTag(tag));
       return item;
     });
   }
