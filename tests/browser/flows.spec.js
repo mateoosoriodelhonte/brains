@@ -398,6 +398,9 @@ test("timer: start, pause, resume, automatic work/break transitions, navigation,
   await page.clock.fastForward(1490000);
   await expect(page.locator("#timer-mode")).toHaveText("Break time");
   await expect(page.getByRole("timer")).toHaveText("05:00");
+  await page.getByRole("button", { name: "Pause timer", exact: true }).click();
+  await expect(page.locator("#timer-status")).toContainText("Paused");
+  await page.getByRole("button", { name: "Resume timer", exact: true }).click();
   await page.clock.fastForward(300000);
   await expect(page.locator("#timer-mode")).toHaveText("Work session");
   await page

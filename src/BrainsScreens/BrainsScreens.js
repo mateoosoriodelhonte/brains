@@ -207,35 +207,36 @@ export class BrainsScreens {
     const time = this.root.querySelector("#timer-time");
     if (!time) return;
     const seconds = Math.ceil(state.remainingMs / 1000);
-    time.textContent = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+    const timeLabel = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+    if (time.textContent !== timeLabel) time.textContent = timeLabel;
     const mode = state.mode === "work" ? "Work session" : "Break time";
     const modeElement = this.root.querySelector("#timer-mode");
+    const transition = this.root.querySelector("#timer-transition");
+    const isReady = !state.isRunning && state.mode === "work" && state.remainingMs === state.durationMs;
     if (modeElement.textContent !== mode) {
       modeElement.textContent = mode;
-      this.root.querySelector("#timer-transition").textContent =
+      transition.textContent =
         state.mode === "break"
           ? "Work session finished. Take a 5-minute break."
           : "Break finished. Your next work session has begun.";
     }
-    if (
-      !state.isRunning &&
-      state.remainingMs === state.durationMs &&
-      state.mode === "work"
-    ) {
-      this.root.querySelector("#timer-transition").textContent =
-        "25 minutes of work, then a 5-minute break.";
+    const defaultHelp = "25 minutes of work, then a 5-minute break.";
+    if (isReady && transition.textContent !== defaultHelp) {
+      transition.textContent = defaultHelp;
     }
-    this.root.querySelector("#timer-status").textContent = state.isRunning
+    const status = this.root.querySelector("#timer-status");
+    const statusLabel = state.isRunning
       ? state.mode === "work"
         ? "One thing at a time"
         : "A moment to recharge"
-      : state.remainingMs === state.durationMs
+      : isReady
         ? "Ready when you are"
         : "Paused · take your time";
+    if (status.textContent !== statusLabel) status.textContent = statusLabel;
     const toggle = this.root.querySelector("#timer-toggle");
     const label = state.isRunning
       ? "Pause timer"
-      : state.remainingMs === state.durationMs
+      : isReady
         ? "Start focus session"
         : "Resume timer";
     if (toggle.textContent !== label) toggle.textContent = label;
