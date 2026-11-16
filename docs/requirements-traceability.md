@@ -1,6 +1,6 @@
 # Requirements traceability
 
-The supplied prompt is the implementation baseline. The workspace was empty: there were no assignment documents, prior code, or competing versions to reconcile. FR identifiers below are preserved. The Pomodoro feature has no invented FR identifier.
+The first MVP used the supplied implementation brief. The repository submission also includes the original [A1 requirements](A1-project-proposal-and-srs.pdf), [A2 models](A2-uml-models.pdf), and [A3 design](A3-system-design.pdf). The mapping uses their FR identifiers. A3 retains the Pomodoro timer under NFR-2.
 
 Paths are relative to the project root.
 
@@ -16,6 +16,8 @@ Paths are relative to the project root.
 | NFR-1 200 tasks within 2 seconds in at least 19/20 runs | All startup components; TaskList sorting; LocalStorageGateway single read | `src/main.js`; workspace load/reconstruct/getSnapshot; dashboard renderer | `tests/browser/performance.spec.js`: 20 fresh contexts, 200 actual DOM rows, exactly one storage read; raw measurements in `docs/performance-results.json`; environment limits in `docs/verification.md` |
 
 Component paths in the table refer to their exact folder under `src/`, e.g. `src/LearnerWorkspace/LearnerProfile.js` and `src/BrainsScreens/BrainsScreens.js`.
+
+The A1 Add Task use case lists later editing as a postcondition, and User Story 3 includes editing. `LearnerProfile.editTask` and `Task.editDetails` update the saved title, due date, and description. The A2 Apply Tag activity's new-tag branch is available in both the Add Task form and the saved-task Add tags form. The browser test **a learner can edit a saved task and create tags during task workflows** verifies that these changes survive reload and that an invalid task does not leave a new tag behind.
 
 ## Cross-cutting reliability
 

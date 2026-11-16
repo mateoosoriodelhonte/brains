@@ -13,6 +13,8 @@ The six supplied component names and class ownership remain intact. This record 
 | `Task.matchesTags`, `Note.matchesTags`, shared `matchingTags` domain function | Multi-tag OR matching; accept selected IDs or Tag objects; no selection matches all. The original filtering operations remain plural. |
 | `Tag.normalizedName` and workspace duplicate check | Trim names and compare case-insensitively to prevent accidental duplicates. Keep the first chosen display capitalization. |
 | Optional fourth `tagIds` argument on `submitTask` and `createNote`, default `[]` | Attach zero or more existing shared tags during the same successful save as creation. |
+| `LearnerProfile.editTask` and `Task.editDetails` | Support A1 task editing and validate the changed title, due date, and description before saving. |
+| Optional `newTagName` on `LearnerProfile.submitTask` and `applyTags` | Support A2's new-tag branch in the task forms. Create and attach the tag in the same transaction as the task change. |
 | `LearnerProfile.editNote(id, title, courseName, content, tagIds)`; `Note.edit` | Explicitly save an entire note edit atomically, including metadata and selected tags; update `lastEdited`. `Note.editContent(newContent)` remains available with an optional injected timestamp for deterministic checks. |
 | `LearnerProfile.applyTags(kind, id, tagIds)` | Add to existing tasks or notes without erasing previous tags; task interface exposes additive tagging. The note editor instead displays a full selected set and permits intentional removal. |
 | `LearnerProfile.load`, `transact`, `getSnapshot`, load error, injectable gateway/clock | Coordinate application operations and storage, retain previous valid state on failed writes, and disable writes after unreadable data. There is one current state plus temporary transaction candidates and detached display snapshots. |
@@ -33,4 +35,4 @@ The six supplied component names and class ownership remain intact. This record 
 - Modern native browser capabilities are acceptable; no framework, backend, cloud SDK, third-party fonts, or runtime package dependencies are introduced.
 - localStorage is not encrypted or backed up automatically. Unreadable data is left untouched; manual backup/recovery is documented rather than silently resetting it.
 - The timer remains a **planned product feature**. The team must amend the SRS before assigning a requirement number. NFR-1 refers to local-device loading, with no broadband prerequisite.
-- Nothing in the empty workspace contradicted the prompt. No prior assignment documents were available to compare.
+- The first iteration used the implementation brief. The repository submission includes the original A1–A3 PDFs and aligns task editing with A1 and inline task tagging with A2.

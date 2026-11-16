@@ -8,6 +8,7 @@ Run `npm ci` and `npm run dev`, then open the printed local URL. Use the same br
 - [ ] **Different learning sources:** Add an SUU assignment, a cybersecurity practice task, and a baking class task. Select more than one tag on at least one task. All appear on one Dashboard.
 - [ ] **Due-date ordering:** Choose different dates and show earliest first. Add two tasks with the same date; their creation order is retained. Enter a past deadline and show its written “Overdue” status.
 - [ ] **Apply another tag:** Expand a task's tag action, select another existing tag, and Save tags. Show that existing tags remain.
+- [ ] **Edit a task:** Change its title, due date, or description and save. Show it in the new position on the dashboard. In **Add tags**, enter a new tag name and show that saving attaches it to the task and makes it available on the sidebar.
 - [ ] **Completion:** Check a pending task; show its completed status, crossed-out title, and updated count. Uncheck it to undo; complete it again for the reload check.
 - [ ] **Tagged note:** Open Notes → Add note. Enter a title, course/lecture, content, and optional shared tags. Show “Unsaved changes”, then Save note.
 - [ ] **Edit a note:** Open the note, change its content, show unsaved status, then Save note. Show the updated content/edit time. Optionally demonstrate Cancel's discard warning.

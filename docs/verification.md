@@ -1,5 +1,13 @@
 # Verification record
 
+## Repository submission
+
+- A fresh checkout started from the README's `npm ci` and `npm run dev` steps on Node.js 24.22.3. Chrome rendered the empty dashboard with no `.env` file.
+- All 25 unit tests and 14 browser tests passed from the fresh checkout. The browser suite built the production bundle and checked task editing, new tag creation and persistence, and rollback on an invalid task submission.
+- The latest local 200-task test passed 20 of 20 runs. The median was 145.7 ms, and the slowest run was 150.2 ms on the Mac used for this check. The historical raw measurements for the first MVP are linked below.
+- The three PDFs in `docs/` matched the attached originals byte for byte. The folder screenshot was captured from the Git file listing used for this submission.
+- `.gitignore` was checked for `.env`, `.env.local`, dependencies, builds, and backups. No tracked files matched the ignore rules. A redacted Gitleaks scan of the reachable Git history reported zero findings.
+
 ## November 10, 2026 repository and input-safety follow-up
 
 - Expanded `.gitignore` patterns were checked with `git check-ignore`; `git ls-files -ci --exclude-standard` found no tracked files matching ignore rules.

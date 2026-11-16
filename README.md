@@ -6,16 +6,24 @@ A local learning hub for university assignments, certifications, independent cou
 
 Team: Mateo Osorio Delhonte and Priscilla Gyllenskog
 
-## Run locally
+## Run locally from a fresh checkout
 
-Use Node.js 20.19+ on the Node 20 line, or Node.js 22.12 or newer, and npm. From the project directory:
+1. Install Git and Node.js 24 with npm. Use a GitHub account with access to the private team repository and authenticate Git for HTTPS cloning. If you already downloaded the repository ZIP, extract it and open a terminal in the extracted folder, then start at step 3.
+2. Clone the repository and enter its folder.
 
-```sh
-npm ci
-npm run dev
-```
+   ```sh
+   git clone https://github.com/mateoosoriodelhonte/brains.git
+   cd brains
+   ```
 
-Open the local URL Vite prints, normally **http://127.0.0.1:5173**. No login or external account is needed. The initial workspace is empty.
+3. Install the locked dependencies and start the app.
+
+   ```sh
+   npm ci
+   npm run dev
+   ```
+
+4. Open the **Local** URL printed in the terminal, usually `http://127.0.0.1:5173/`. Leave the terminal open while using Brains. The dashboard starts empty in a fresh browser profile. Brains runs without a login, `.env` file, password, API key, or database setup. Press `Ctrl+C` in the terminal when finished.
 
 For the production build:
 
@@ -61,7 +69,7 @@ Browser tests start and stop their own production preview on port 4173; stop any
 - Clearing browser data or using a temporary/private profile can lose the workspace. The MVP has no in-app export/import or automatic backup.
 - The timer defaults to 25-minute work and 5-minute break sessions, transitions automatically, and continues accurately across delayed callbacks and navigation within the app. Keep the tab open. Reloading or closing the tab resets the timer. Timer state and selected filters are deliberately not persisted. No alarm or external notification is sent.
 - Notes need a title, course/lecture, and nonblank content. Save explicitly. Unsaved changes are marked and closing the form asks before discarding them. Browser reload/close warnings depend on browser support.
-- Task tags can be added after creation without removing existing tags. The note editor shows the complete selected set and allows intentional tag removal. Tag rename/deletion and task edit/deletion are outside this MVP.
+- Edit a saved task's title, due date, or description from the dashboard. Create a tag while adding a task or applying tags to an existing task. The note editor allows intentional tag removal. Tag rename and deletion and task deletion are outside this MVP.
 - Modern browsers with ES modules, `crypto.randomUUID`, native `<dialog>`, localStorage, and current CSS support are expected. Automated browser coverage is Chrome; Safari, Firefox, actual mobile devices, and full screen-reader auditing remain unverified.
 
 ### If saving fails
@@ -90,6 +98,13 @@ There is no automatic format migration or automatic reset of corrupted records.
 
 `src/main.js` only connects the components. Read [architecture](docs/architecture.md), [requirements traceability](docs/requirements-traceability.md), [design changes](docs/design-changes.md), and [AI assistance](docs/ai-usage.md).
 
+## Course submission
+
+- [Repository section with the folder tree screenshot](docs/repository-submission.md)
+- [A1 — Project proposal and SRS draft](docs/A1-project-proposal-and-srs.pdf)
+- [A2 — UML models](docs/A2-uml-models.pdf)
+- [A3 — System design, including the development view](docs/A3-system-design.pdf)
+
 For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests and the production build automatically on pushes to `main` and pull requests.
 
 See [input handling and injection boundaries](docs/security.md) for the localStorage architecture, safe text rendering, and injection regression checks. This MVP has no SQL query layer.
@@ -97,7 +112,7 @@ See [input handling and injection boundaries](docs/security.md) for the localSto
 ## Demonstrate it
 
 1. Add an untagged task, then create tags for SUU, a certification, and another activity.
-2. Add tasks with different due dates and tag combinations. Past dates are allowed and marked overdue.
+2. Add tasks with different due dates and tag combinations. Edit a saved task's due date to see it move in the dashboard. Past dates are allowed and marked overdue.
 3. Complete a task; uncheck it to return it to pending.
 4. Select multiple sidebar tags. Matching uses **OR**: any selected tag matches. Clear to see everything.
 5. Open Notes, create a tagged course note, reopen it, edit, and explicitly Save.

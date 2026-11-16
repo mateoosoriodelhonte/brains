@@ -30,3 +30,7 @@ The user also requested SQL-injection protection. Codex reviewed the existing st
 ## November 15, 2026 follow-up
 
 Codex preserved note formatting, kept unfinished tag names when switching views, showed only available tags in the task tag picker, clarified paused break controls, and reduced duplicate work during dashboard rendering. Codex updated browser coverage for the affected workflows. All 25 unit tests and 13 browser tests passed locally, including all 20 runs of the 200-task performance check.
+
+## Repository submission follow-up
+
+Codex compared the repository against the team’s A1–A3 PDFs, copied the originals into `docs/`, and prepared the repository section with a screenshot of the Git file tree. Codex revised the setup steps, verified the component folders against A3, and implemented and tested task editing from A1 and inline tag creation from A2. The component ownership table records the original team assignments from A3. This log describes the assistance used to prepare the submission.
