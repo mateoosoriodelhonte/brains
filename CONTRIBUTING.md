@@ -11,7 +11,15 @@ Brains is a CS 2450 course project by Mateo Osorio Delhonte and Priscilla Gyllen
 5. Review `git diff`, stage the relevant files, and inspect `git diff --cached` before committing.
 6. Commit with a descriptive message, push the branch, and open a pull request for review. Include the resulting behavior and the checks actually run.
 
-GitHub's **Project checks** workflow runs the unit/architecture/storage/timer tests and production build for pushes to `main` and pull requests. It does not replace browser testing or the designated-laptop performance check, and it does not deploy the app.
+## Review and merge
+
+1. Request a review from the other teammate in GitHub’s **Reviewers** panel. Use the pull request template to describe the change and its verification.
+2. The reviewer checks the diff, then submits their review through **Review changes**. Resolve requested changes and ask for another review when ready.
+3. Merge through the pull request after the teammate approves and the checks pass.
+
+Use a commit message that tells the reviewer what changed, such as `Preserve note formatting when reopening saved notes`. Each teammate should make at least one commit for work they performed and include it in a merged pull request.
+
+GitHub's **Project checks** workflow runs on pull requests and pushes to `main`. Measure the laptop performance requirement separately on the designated machine.
 
 ## Keep local files private
 
