@@ -106,7 +106,7 @@ There is no automatic format migration or automatic reset of corrupted records.
 - [A2 — UML models](docs/A2-uml-models.pdf)
 - [A3 — System design, including the development view](docs/A3-system-design.pdf)
 
-For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests and the production build automatically on pushes to `main` and pull requests.
+For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests, the production build, and Chromium browser tests automatically on pushes to `main` and pull requests.
 
 See [input handling and injection boundaries](docs/security.md) for the localStorage architecture, safe text rendering, and injection regression checks. This MVP has no SQL query layer.
 
