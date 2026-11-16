@@ -223,21 +223,29 @@ export class LearnerProfile {
   getSnapshot(taskTags = [], noteTags = []) {
     const today = localDate(this.clock());
     const tasks = this.state.taskList.getTasksByDueDate();
+    const visibleTasks = [];
+    let complete = 0;
+    let overdue = 0;
+    for (const task of tasks) {
+      const isOverdue = task.isOverdue(today);
+      if (task.isComplete) complete++;
+      if (isOverdue) overdue++;
+      if (taskTags.length === 0 || task.matchesTags(taskTags)) {
+        visibleTasks.push({ ...task.toRecord(), isOverdue });
+      }
+    }
     return {
       name: this.name,
       today,
       loadError: this.loadError,
       tags: this.state.tags.map((tag) => tag.toRecord()),
-      tasks: this.filterTasksByTag(taskTags).map((task) => ({
-        ...task.toRecord(),
-        isOverdue: task.isOverdue(today),
-      })),
+      tasks: visibleTasks,
       notes: this.filterNotesByTag(noteTags).map((note) => note.toRecord()),
       counts: {
         total: tasks.length,
-        pending: tasks.filter((task) => !task.isComplete).length,
-        overdue: tasks.filter((task) => task.isOverdue(today)).length,
-        complete: tasks.filter((task) => task.isComplete).length,
+        pending: tasks.length - complete,
+        overdue,
+        complete,
         notes: this.state.notes.length,
       },
       timer: this.getTimerState(),

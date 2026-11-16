@@ -21,12 +21,12 @@ const escape = (value) =>
         character
       ],
   );
-const formatDate = (value) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(`${value}T12:00:00`));
+const taskDateFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+const formatDate = (value) => taskDateFormatter.format(new Date(`${value}T12:00:00`));
 
 export class BrainsScreens {
   constructor(root) {

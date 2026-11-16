@@ -24,7 +24,7 @@ The six supplied component names and class ownership remain intact. This record 
 ## Explicit assumptions and scope
 
 - Notes require nonblank title, course/lecture, and content. Task title and due date are required; description and tags are optional. Past due dates are valid.
-- Titles and course labels are limited to 200 characters; tags to 40; descriptions/content to 100,000. Required text is trimmed; free-form task descriptions preserve formatting. Empty note content is invalid.
+- Titles and course labels are limited to 200 characters, tags to 40, and descriptions and note content to 100,000. Titles, course labels, and tag names are trimmed. Task descriptions and note content preserve indentation and blank lines. Whitespace-only notes are invalid.
 - Tasks are sorted by calendar date ascending with stable saved insertion order for ties. Completion does not remove or move a task out of the list. Notes retain creation order.
 - Tag filters use OR semantics and are independent per view. Selecting no tags shows all; Clear never alters stored records. Filters and navigation are temporary.
 - The default learner name is `Learner`; no login/profile editor is introduced.
