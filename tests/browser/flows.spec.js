@@ -175,10 +175,14 @@ test("existing task tags are additive and keep shared identity after reload", as
   await createTag(page, "B");
   await createTask(page, "Tagged task", "2026-11-05", ["A"]);
   const task = page.locator(".task-row");
-  await task.getByText("Edit tags", { exact: true }).click();
-  await task.getByLabel("B", { exact: true }).check();
-  await task.getByLabel("A", { exact: true }).uncheck();
+  await task.getByText("Add tags", { exact: true }).click();
+  await expect(task.getByLabel("A", { exact: true })).toHaveCount(0);
   await task.getByRole("button", { name: "Save tags", exact: true }).click();
+  await expect(task.getByRole("alert")).toHaveText("Select at least one tag to add.");
+  await task.getByLabel("B", { exact: true }).check();
+  await task.getByRole("button", { name: "Save tags", exact: true }).click();
+  await expect(task.getByRole("checkbox")).toBeFocused();
+  await expect(task.getByText("Add tags", { exact: true })).toHaveCount(0);
   await page.reload();
   await expect(task.locator(".tag-chip")).toHaveText(["A", "B"]);
 });

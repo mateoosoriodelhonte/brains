@@ -117,6 +117,10 @@ export class BrainsController {
           ? `tags-error-${form.dataset.id}`
           : "form-error";
     this.screens.clearError(errorTarget);
+    if (form.dataset.kind === "task-tags" && tags.length === 0) {
+      this.screens.showError(errorTarget, "Select at least one tag to add.");
+      return;
+    }
     try {
       if (form.id === "task-form") {
         this.workspace.submitTask(

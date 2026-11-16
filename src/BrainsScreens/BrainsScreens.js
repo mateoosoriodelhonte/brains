@@ -151,6 +151,7 @@ export class BrainsScreens {
   }
   taskRow(task, snapshot) {
     const disabled = snapshot.loadError ? "disabled" : "";
+    const availableTags = snapshot.tags.filter((tag) => !task.tagIds.includes(tag.id));
     const state = task.isComplete
       ? "Completed"
       : task.isOverdue
@@ -162,7 +163,7 @@ export class BrainsScreens {
       <input type="checkbox" class="task-checkbox" data-complete="${escape(task.id)}" aria-label="Mark ${escape(task.title)} ${task.isComplete ? "pending" : "complete"}" ${task.isComplete ? "checked" : ""} ${disabled}>
       <div class="task-copy"><h3>${escape(task.title)}</h3>${task.description ? `<p class="task-description">${escape(task.description)}</p>` : ""}<div class="item-tags">${this.chips(task.tagIds)}</div></div>
       <div class="task-date"><time datetime="${escape(task.dueDate)}">${formatDate(task.dueDate)}</time><span class="status ${task.isComplete ? "complete" : task.isOverdue ? "overdue" : ""}">${state}</span></div></div>
-      ${snapshot.tags.length ? `<details class="task-tag-editor"><summary>Edit tags</summary><form data-kind="task-tags" data-id="${escape(task.id)}" novalidate><p class="small muted">Select tags to add. Existing tags are kept.</p>${this.tagOptions(snapshot.tags, task.tagIds, `task-${task.id}`)}<p id="tags-error-${escape(task.id)}" class="form-error" role="alert"></p><button class="button secondary small-button" ${disabled}>Save tags</button></form></details>` : ""}</article>`;
+      ${availableTags.length ? `<details class="task-tag-editor"><summary>Add tags</summary><form data-kind="task-tags" data-id="${escape(task.id)}" novalidate>${this.tagOptions(availableTags, [], `task-${task.id}`)}<p id="tags-error-${escape(task.id)}" class="form-error" role="alert"></p><button class="button secondary small-button" ${disabled}>Save tags</button></form></details>` : ""}</article>`;
   }
   updateTaskCompletion(snapshot, id) {
     this.snapshot = snapshot;
@@ -310,11 +311,9 @@ export class BrainsScreens {
     if (form.id === "tag-form") {
       this.root.querySelector("#tag-name").focus();
     } else if (form.dataset.kind === "task-tags") {
-      this.root
-        .querySelector(
-          `[data-task-id="${CSS.escape(form.dataset.id)}"] summary`,
-        )
-        ?.focus();
+      const row = this.root.querySelector(`[data-task-id="${CSS.escape(form.dataset.id)}"]`);
+      const target = row?.querySelector("summary") ?? row?.querySelector("[data-complete]");
+      target?.focus();
     } else if (form.id === "note-form" && form.dataset.id) {
       this.root
         .querySelector(
