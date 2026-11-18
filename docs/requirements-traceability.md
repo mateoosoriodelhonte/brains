@@ -4,6 +4,23 @@ The first MVP used the supplied implementation brief. The repository submission 
 
 Paths are relative to the project root.
 
+## 5. Traceability Table, Extended
+
+This table retains the five columns from A3 and adds **Code**. FR-1 through FR-6 are implemented. Every Code cell identifies the implementing file and method.
+
+| Functional Requirement | Use Case | Class(es) | Component(s) | Diagram(s) | Code |
+| --- | --- | --- | --- | --- | --- |
+| **FR-1:** The system shall allow a user to manually create a task with a title, due date, and zero or more optional tags. | Add Task (extended by Apply Tag) | LearnerProfile, TaskList, Task, Tag | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel, LocalStorageGateway | Use Case, Class, Sequence (Add Task), Architecture | `src/LearnerWorkspace/LearnerProfile.js` → `submitTask()`; `src/TaskNoteModel/TaskList.js` → `addTask()`; `src/LocalStorageGateway/LocalStorageGateway.js` → `save()` |
+| **FR-2:** The system shall display all of a user's tasks on a single dashboard, sorted by due date with the soonest date first. | View Dashboard | LearnerProfile, TaskList, Task | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel, LocalStorageGateway | Use Case, Class, Sequence (getTasksByDueDate), Architecture | `src/TaskNoteModel/TaskList.js` → `getTasksByDueDate()`; `src/LearnerWorkspace/LearnerProfile.js` → `getSnapshot()`; `src/BrainsScreens/BrainsScreens.js` → `dashboard()` |
+| **FR-3:** The system shall allow a user to mark a task as complete and shall visually distinguish completed tasks from pending tasks. | Complete Task | LearnerProfile, TaskList, Task | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel, LocalStorageGateway | Use Case, Class, Sequence (completeTask, markComplete), Architecture | `src/LearnerWorkspace/LearnerProfile.js` → `completeTask()`; `src/TaskNoteModel/Task.js` → `markComplete()`; `src/BrainsScreens/BrainsScreens.js` → `updateTaskCompletion()` |
+| **FR-4:** The system shall allow a user to create a custom tag and apply one or more tags to a task or note. | Create Tag, Apply Tag | LearnerProfile, Tag, Task, Note | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel, LocalStorageGateway | Use Case, Class, Activity (Apply Tag to Task), Architecture | `src/LearnerWorkspace/LearnerProfile.js` → `createTag()`, `applyTags()`; `src/TaskNoteModel/Task.js` → `addTag()`; `src/TaskNoteModel/Note.js` → `addTag()` |
+| **FR-5:** The system shall allow a user to filter the dashboard and notes view by one or more selected tags. | Filter by Tag | LearnerProfile, TaskList, Task, Note, Tag | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel | Use Case, Class (filterTasksByTag, filterNotesByTag, filterByTag), Architecture | `src/LearnerWorkspace/LearnerProfile.js` → `filterTasksByTag()`, `filterNotesByTag()`, `getSnapshot()`; `src/TaskNoteModel/TaskList.js` → `filterByTag()`; `src/TaskNoteModel/validation.js` → `matchingTags()` |
+| **FR-6:** The system shall provide a notes section where a user can create and edit notes associated with a specific class or lecture. | Create Note, Edit Note | LearnerProfile, Note | BrainsScreens, BrainsController, LearnerWorkspace, TaskNoteModel, LocalStorageGateway | Use Case, Class (createNote, editContent), Architecture | `src/LearnerWorkspace/LearnerProfile.js` → `createNote()`, `editNote()`; `src/TaskNoteModel/Note.js` → `editContent()`; `src/BrainsScreens/BrainsScreens.js` → `openNoteForm()`, `notes()` |
+
+As in A3, the Pomodoro timer is covered by NFR-2. Its implementation and tests appear in the supporting table below.
+
+## Implementation and test evidence
+
 | Requirement | Components / classes | Implementation locations | Automated evidence |
 | --- | --- | --- | --- |
 | FR-1 Add Task | BrainsScreens, BrainsController, LearnerWorkspace / LearnerProfile, TaskNoteModel / TaskList, Task | `BrainsScreens.openTaskForm`; `BrainsController.submit`; `LearnerProfile.submitTask` and `transact`; `TaskList.addTask`; Task constructor and `validation.js` | `tests/model.test.js`: required title, real date, past dates; `tests/workspace.test.js`: invalid submission unchanged/no write, zero/multiple tags, failed writes; `tests/browser/flows.spec.js`: task form validation and persistence |
