@@ -107,7 +107,7 @@ test("tasks: validation, reusable tags, due order, completion, OR filtering, and
   await page.getByLabel("Task title").fill("Read a chapter");
   await page.getByRole("button", { name: "Save task", exact: true }).click();
   await expect(page.locator("#form-error")).toHaveText(
-    "A valid due date is required.",
+    "Choose a real calendar date for the due date.",
   );
   await page.getByLabel("Due date").fill("2026-11-20");
   await page.getByRole("button", { name: "Save task", exact: true }).click();
