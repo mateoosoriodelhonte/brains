@@ -16,7 +16,7 @@ export function optionalText(value, label, maxLength = 100000) {
 
 export function calendarDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    throw new Error("A valid due date is required.");
+    throw new Error("Choose a real calendar date for the due date.");
   }
   const date = new Date(`${value}T12:00:00`);
   const [year, month, day] = value.split("-").map(Number);
@@ -26,7 +26,7 @@ export function calendarDate(value) {
     date.getMonth() + 1 !== month ||
     date.getDate() !== day
   ) {
-    throw new Error("A valid due date is required.");
+    throw new Error("Choose a real calendar date for the due date.");
   }
   return value;
 }
