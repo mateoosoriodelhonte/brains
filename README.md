@@ -48,6 +48,7 @@ Before committing, inspect `git status` and `git diff --cached`. Ignore rules do
 npm test                    # Node's built-in runner: domain, application, storage, architecture
 npm run build               # Production bundle
 npm run test:browser        # Main flows + NFR-1 on the production bundle
+npm run test:flows          # Main browser flows on the production bundle
 npm run test:performance    # Only the 20-run, 200-task measurement
 ```
 
@@ -105,7 +106,7 @@ There is no automatic format migration or automatic reset of corrupted records.
 - [A2 — UML models](docs/A2-uml-models.pdf)
 - [A3 — System design, including the development view](docs/A3-system-design.pdf)
 
-For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests and the production build automatically on pushes to `main` and pull requests.
+For teammate setup, review steps, and commit attribution, see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub runs unit tests, the production build, and Chromium browser tests automatically on pushes to `main` and pull requests.
 
 See [input handling and injection boundaries](docs/security.md) for the localStorage architecture, safe text rendering, and injection regression checks. This MVP has no SQL query layer.
 
